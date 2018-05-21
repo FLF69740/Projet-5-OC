@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view"
+    android:layout_width="200dp"
+    android:layout_height="match_parent">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/activity_main_drawer_top_stories"
+
+            android:title="Top Stories" />
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/activity_main_drawer_most_popular"
+
+            android:title="Most Popular" />
+    </group>
+
+    <item android:title="Article Preferences">
+        <menu>
+
+        </menu>
+    </item>
+
+</menu>
