@@ -24,6 +24,7 @@ import android.view.SubMenu;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.francoislf.mynews.Controllers.OtherActivities.ArticleSearchActivity;
 import com.example.francoislf.mynews.R;
 
 import butterknife.BindView;
@@ -113,8 +114,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // Configure ToolBar
     private void setToolbarConfiguration(){
         setSupportActionBar(mToolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+  //      ActionBar actionBar = getSupportActionBar();
+  //      actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     // Catch Item icon into ToolBar
@@ -133,8 +134,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.menu_activity_parametres :
                 return true;
             case  R.id.menu_activity_search :
+                launchSearchArticleActivity();
                 return true;
             default : return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void launchSearchArticleActivity(){
+        Intent intent = new Intent(this, ArticleSearchActivity.class);
+        this.startActivity(intent);
     }
 }
