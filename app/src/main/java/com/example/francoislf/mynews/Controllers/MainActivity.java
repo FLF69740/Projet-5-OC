@@ -25,6 +25,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.francoislf.mynews.Controllers.OtherActivities.ArticleSearchActivity;
+import com.example.francoislf.mynews.Controllers.OtherActivities.NotificationsActivity;
 import com.example.francoislf.mynews.R;
 
 import butterknife.BindView;
@@ -114,8 +115,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // Configure ToolBar
     private void setToolbarConfiguration(){
         setSupportActionBar(mToolbar);
-  //      ActionBar actionBar = getSupportActionBar();
-  //      actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     // Catch Item icon into ToolBar
@@ -132,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId())
         {
             case R.id.menu_activity_parametres :
+                launchNotifications();
                 return true;
             case  R.id.menu_activity_search :
                 launchSearchArticleActivity();
@@ -142,6 +142,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void launchSearchArticleActivity(){
         Intent intent = new Intent(this, ArticleSearchActivity.class);
+        this.startActivity(intent);
+    }
+
+    private void launchNotifications(){
+        Intent intent = new Intent(this, NotificationsActivity.class);
         this.startActivity(intent);
     }
 }
