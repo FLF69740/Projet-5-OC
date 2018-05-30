@@ -31,7 +31,11 @@ public class NotificationsFragment extends AbstractFragment {
     }
 
     @Override
-    protected void editCalendars() {
+    protected void editCalendars() {// do nothing
+    }
+
+    @Override
+    protected void listenerRules() {
 
     }
 

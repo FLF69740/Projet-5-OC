@@ -1,6 +1,7 @@
 package com.example.francoislf.mynews.Controllers;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.ActionProvider;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -26,10 +28,19 @@ import android.widget.Toast;
 
 import com.example.francoislf.mynews.Controllers.OtherActivities.ArticleSearchActivity;
 import com.example.francoislf.mynews.Controllers.OtherActivities.NotificationsActivity;
+import com.example.francoislf.mynews.Models.SearchPreferences;
 import com.example.francoislf.mynews.R;
+import com.google.gson.reflect.TypeToken;
+
+import com.google.gson.Gson;
+
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -39,12 +50,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @BindView(R.id.activity_main_viewpager) ViewPager mViewPager;
     @BindView(R.id.activity_main_tabLayout) TabLayout mTabLayout;
 
+    private SharedPreferences mJSonPreferences;
+    public static final String SHARED_DEFAULT_SEARCH = "SHARED_DEFAULT_SEARCH";
+    private SearchPreferences mSearchPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
+
+        load();
 
         // ToolBar Configuration
         setToolbarConfiguration();
@@ -61,7 +78,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     }
-
 
     /**
      *  IHM CONFIGURATION ----- NAVIGATION DRAWER -----
@@ -142,6 +158,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void launchSearchArticleActivity(){
         Intent intent = new Intent(this, ArticleSearchActivity.class);
+        intent.putExtra(ArticleSearchActivity.SHARED_DEFAULT_SEARCH, mJSonPreferences.getString(SHARED_DEFAULT_SEARCH, null));
         this.startActivity(intent);
     }
 
@@ -149,4 +166,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent intent = new Intent(this, NotificationsActivity.class);
         this.startActivity(intent);
     }
+
+    /**
+     *  DATA UPDATE
+     */
+
+    // Load JSon in order to create class object with Gson library
+    private void load(){
+
+        mJSonPreferences = getSharedPreferences(SHARED_DEFAULT_SEARCH, MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = mJSonPreferences.getString(SHARED_DEFAULT_SEARCH, null);
+        Type type = new TypeToken<SearchPreferences>() {}.getType();
+        mSearchPreferences = gson.fromJson(json, type);
+
+        if (mSearchPreferences == null) mSearchPreferences = new SearchPreferences();
+    }
+
 }

@@ -9,10 +9,23 @@
     </item>
 
     <item
-        android:id="@+id/menu_activity_parametres"
         android:icon="@drawable/baseline_more_vert_black_24dp"
         app:showAsAction="ifRoom"
         android:title="Paramètres">
+
+        <menu xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto">
+
+            <item
+                android:id="@+id/menu_activity_parametres"
+                android:title="Notifications"/>
+            <item
+                android:title="Help"/>
+            <item
+                android:title="About"/>
+
+        </menu>
+
     </item>
 
 </menu>

@@ -5,14 +5,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
+import com.example.francoislf.mynews.Models.SearchPreferences;
 import com.example.francoislf.mynews.R;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public abstract class AbstractActivity extends AppCompatActivity {
 
-    protected abstract void configurefragment();
+
+    public static final String SHARED_DEFAULT_SEARCH = "SHARED_DEFAULT_SEARCH";
+    protected SearchPreferences mSearchPreferences;
+
+    protected abstract void configureFragment();
     protected abstract String configureToolBarTitle();
 
     @BindView(R.id.activity_article_search_toolbar) Toolbar mToolbar;
@@ -23,7 +27,8 @@ public abstract class AbstractActivity extends AppCompatActivity {
         setContentView(R.layout.activity_article_search);
 
         ButterKnife.bind(this);
-        configurefragment();
+
+        configureFragment();
         configureToolBar();
     }
 
@@ -34,4 +39,5 @@ public abstract class AbstractActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(configureToolBarTitle());
     }
+
 }

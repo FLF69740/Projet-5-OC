@@ -2,6 +2,7 @@ package com.example.francoislf.mynews.Controllers.OtherActivities;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.francoislf.mynews.R;
 
@@ -23,28 +25,13 @@ import java.util.Locale;
  */
 public class ArticleSearchFragment extends AbstractFragment {
 
-    Calendar mCalendarBegin = Calendar.getInstance();
-    Calendar mCalendarEnd = Calendar.getInstance();
+    private Calendar mCalendarBegin = Calendar.getInstance();
+    private Calendar mCalendarEnd = Calendar.getInstance();
 
-    DatePickerDialog.OnDateSetListener dateBegin = new DatePickerDialog.OnDateSetListener() {
-        @Override
-        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-            mCalendarBegin.set(Calendar.YEAR, year);
-            mCalendarBegin.set(Calendar.MONTH, month);
-            mCalendarBegin.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            updateLabel(mEditTextBeginDate, mCalendarBegin, 1);
-        }
-    };
+    private String mBeginDateString = "", mEndDateString = "";
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
 
-    DatePickerDialog.OnDateSetListener dateEnd = new DatePickerDialog.OnDateSetListener() {
-        @Override
-        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-            mCalendarEnd.set(Calendar.YEAR, year);
-            mCalendarEnd.set(Calendar.MONTH, month);
-            mCalendarEnd.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            updateLabel(mEditTextEndDate, mCalendarEnd,2);
-        }
-    };
+
 
     @Override
     protected AbstractFragment newInstance() {
@@ -63,12 +50,49 @@ public class ArticleSearchFragment extends AbstractFragment {
         mLinearLayoutSeparator.setVisibility(View.GONE);
     }
 
-    // Button state
-    @Override
-    protected void widgetActionState() {
-        mButtonLaunchSearch.setEnabled(editTextNotEmpty() && checkBoxChecked());
+    /**
+     *  DATE ALGORITHMS
+     */
+
+    DatePickerDialog.OnDateSetListener dateBegin = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month);
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+            setDateString(calendar,0);
+            if (getComparationDates(calendar, mCalendarEnd)){
+                updateLabel(0);
+                mCalendarBegin = calendar;
+            }
+            else alertDateMessage();
+        }
+    };
+
+    DatePickerDialog.OnDateSetListener dateEnd = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month);
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+            setDateString(calendar,1);
+            if (getComparationDates(mCalendarBegin, calendar)){
+                updateLabel(1);
+                mCalendarEnd = calendar;
+            }
+            else alertDateMessage();
+        }
+    };
+
+    private void alertDateMessage(){
+        Toast.makeText(this.getContext(),"Start and end dates are reversed", Toast.LENGTH_SHORT).show();
     }
 
+    // Define Listeners from Calendars (Begin and End Dates)
     protected void editCalendars(){
         mEditTextBeginDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,30 +111,58 @@ public class ArticleSearchFragment extends AbstractFragment {
         });
     }
 
-    private void updateLabel(EditText editText, Calendar calendar, int pos) {
-        String myFormat = "dd/MM/yyyy";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.FRANCE);
-        editText.setText(sdf.format(calendar.getTime()));
+    private void updateLabel(int pos) {
 
-        if ((pos == 2) && (mEditTextBeginDate.getText().toString().isEmpty())) {
-            mEditTextBeginDate.setText(sdf.format(calendar.getTime()));
+        switch (pos){
+            case 0 : mEditTextBeginDate.setText(getDateString(pos)); break;
+            case 1 : mEditTextEndDate.setText(getDateString(pos)); break;
+        }
+
+        if ((pos == 1) && (mEditTextBeginDate.getText().toString().isEmpty())) {
+            mEditTextBeginDate.setText(getDateString(pos));
             mCalendarBegin = mCalendarEnd;
         }
+    }
 
-        if (mCalendarBegin.getTimeInMillis() > mCalendarEnd.getTimeInMillis()) {
-            mEditTextBeginDate.setText(sdf.format(mCalendarEnd.getTime()));
-            mEditTextEndDate.setText(sdf.format(mCalendarBegin.getTime()));
+    // Define the String of the target date
+    public void setDateString(Calendar calendar, int position){
+        if (position == 0) mBeginDateString = sdf.format(calendar.getTime());
+        else mEndDateString = sdf.format(calendar.getTime());
+    }
 
-            Calendar calendarTemp = mCalendarEnd;
-            mCalendarEnd = mCalendarBegin;
-            mCalendarBegin = calendarTemp;
+    // Return the String of the target date
+    public String getDateString(int position) {
+        if (position == 0) return mBeginDateString;
+        else return mEndDateString;
+    }
 
-        }
+    // Comparation between the dates
+    public boolean getComparationDates(Calendar calendar1, Calendar calendar2){
+        if (calendar1.getTimeInMillis() > calendar2.getTimeInMillis()) return false;
+        else return true;
+    }
 
 
-        Log.i("TAGO", mEditTextBeginDate.getText().toString() + " - " + mEditTextEndDate.getText().toString() +
-                " : " + mCalendarBegin.getTimeInMillis() + " - " + mCalendarEnd.getTimeInMillis());
 
+
+
+    // Button state
+    @Override
+    protected void widgetActionState() {
+        mButtonLaunchSearch.setEnabled(this.getWidgetActionState());
+    }
+
+    // define what happened when Button search is clicked
+    @Override
+    protected void listenerRules() {
+        mButtonLaunchSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (int j = 0 ; j < mCheckBoxes.length ; j++) {
+                    if (mCheckBoxes[j].isChecked()) mSearchPreferences.addCheckBox(mCheckBoxes[j].getText().toString());
+                }
+            }
+        });
     }
 
 }

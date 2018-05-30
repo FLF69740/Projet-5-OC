@@ -17,14 +17,15 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.example.francoislf.mynews.Models.SearchPreferences;
 import com.example.francoislf.mynews.R;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public abstract class AbstractFragment extends Fragment {
+
+    protected SearchPreferences mSearchPreferences;
 
     @BindView(R.id.article_search_editText) EditText mEditText;
     @BindView(R.id.article_search_begin_date) EditText mEditTextBeginDate;
@@ -52,6 +53,7 @@ public abstract class AbstractFragment extends Fragment {
     protected abstract void hiddenWidget();
     protected abstract void widgetActionState();
     protected abstract void editCalendars();
+    protected abstract void listenerRules();
 
     @Nullable
     @Override
@@ -61,11 +63,23 @@ public abstract class AbstractFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         this.hiddenWidget();
+        this.initCheckBoxTable();
         this.numberCheckBoxChecked();
         this.enableOrDisableEditText();
         this.editCalendars();
+        this.listenerRules();
 
         return view;
+    }
+
+    // Creation of CheckBox Table
+    public void initCheckBoxTable(){
+        mCheckBoxes[0] = mCheckBoxArts;
+        mCheckBoxes[1] = mCheckBoxBusiness;
+        mCheckBoxes[2] = mCheckBoxEntrepreneurs;
+        mCheckBoxes[3] = mCheckBoxPolitics;
+        mCheckBoxes[4] = mCheckBoxSports;
+        mCheckBoxes[5] = mCheckBoxTravel;
     }
 
     // Listener definition of EditText
@@ -87,13 +101,7 @@ public abstract class AbstractFragment extends Fragment {
     }
 
     // Listener definition of CheckBoxes
-    public void numberCheckBoxChecked(){
-        mCheckBoxes[0] = mCheckBoxArts;
-        mCheckBoxes[1] = mCheckBoxBusiness;
-        mCheckBoxes[2] = mCheckBoxEntrepreneurs;
-        mCheckBoxes[3] = mCheckBoxPolitics;
-        mCheckBoxes[4] = mCheckBoxSports;
-        mCheckBoxes[5] = mCheckBoxTravel;
+    protected void numberCheckBoxChecked(){
 
         for (int i = 0 ; i < mCheckBoxes.length ; i++){
             mCheckBoxes[i].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -133,6 +141,21 @@ public abstract class AbstractFragment extends Fragment {
     // Return the double test (EditText and CheckBoxes)
     public boolean getWidgetActionState(){
         return (editTextNotEmpty() && checkBoxChecked());
+    }
+
+    // Configure SharedPreferences into fragment
+    public void updateFragmentData(SearchPreferences searchPreferences){
+
+        this.mSearchPreferences = searchPreferences;
+
+        mEditText.setText(mSearchPreferences.getSearchString());
+
+        for (int i = 0 ; i < mCheckBoxes.length ; i++){
+            for (int j = 0 ; j < mSearchPreferences.getListCheckBoxString().size() ; j++)
+                if (mCheckBoxes[i].getText().toString().equals(mSearchPreferences.getListCheckBoxString().get(j)))
+                    mCheckBoxes[i].setChecked(true);
+        }
+
     }
 
 
