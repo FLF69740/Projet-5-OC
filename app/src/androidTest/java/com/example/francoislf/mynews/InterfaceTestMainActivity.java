@@ -59,7 +59,7 @@ public class InterfaceTestMainActivity {
         onView(withId(R.id.activity_main_viewpager)).perform(swipeLeft());
         Thread.sleep(2000);
     }
-
+/*
     // test if TabLayout appear and
     @Test
     public void testTabLayout() throws Exception {
@@ -68,5 +68,5 @@ public class InterfaceTestMainActivity {
         onView(withText("PAGE : 1")).perform(click());
         Thread.sleep(2000);
     }
-
+*/
 }
