@@ -5,7 +5,7 @@
     tools:showIn="navigation_view"
     android:layout_width="200dp"
     android:layout_height="match_parent">
-
+<!--
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/activity_main_drawer_top_stories"
@@ -25,5 +25,5 @@
 
         </menu>
     </item>
-
+-->
 </menu>

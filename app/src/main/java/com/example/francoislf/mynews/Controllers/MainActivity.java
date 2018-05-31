@@ -3,41 +3,25 @@ package com.example.francoislf.mynews.Controllers;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-
-
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.ActionProvider;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
-import android.view.View;
-import android.widget.Toast;
-
 import com.example.francoislf.mynews.Controllers.OtherActivities.ArticleSearchActivity;
 import com.example.francoislf.mynews.Controllers.OtherActivities.NotificationsActivity;
 import com.example.francoislf.mynews.Models.SearchPreferences;
 import com.example.francoislf.mynews.R;
 import com.google.gson.reflect.TypeToken;
-
 import com.google.gson.Gson;
-
-
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -76,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         configureViewPager();
 
         mTabLayout.getTabAt(0).select();
-
     }
 
     /**
@@ -85,33 +68,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     // Drawer Layout Configuration
     private void configureDrawerLayout(){
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(toggle);
         toggle.getDrawerArrowDrawable().setColor(Color.parseColor("#000000"));
         toggle.syncState();
+
+        Menu m = mNavigationView.getMenu();
+        MenuItem[] listMenuItem = new MenuItem[mSearchPreferences.getListCheckBoxString().size()];
+        for (int i = 0 ; i < mSearchPreferences.getListCheckBoxString().size() ; i++)
+            listMenuItem[i] = m.add(0,i,i,mSearchPreferences.getListCheckBoxString().get(i));
+
     }
 
     // Navigation item click
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-        int id = item.getItemId();
-
-        switch (id){
-            case R.id.activity_main_drawer_most_popular :
-                Toast.makeText(this, "MOST POPULAR", Toast.LENGTH_SHORT).show();
-                mTabLayout.getTabAt(1).select();
-                break;
-            case  R.id.activity_main_drawer_top_stories :
-                Toast.makeText(this, "TOP STORIES", Toast.LENGTH_SHORT).show();
-                mTabLayout.getTabAt(0).select();
-                break;
-        }
+        mTabLayout.getTabAt(item.getItemId()).select();
         this.mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
     /**
      *  IHM CONFIGURATION ----- VIEWPAGER -----
@@ -119,11 +94,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     // Configure ViewPager
     private void configureViewPager(){
-        mViewPager.setAdapter(new PageAdapter(getSupportFragmentManager()));
+        mViewPager.setAdapter(new PageAdapter(getSupportFragmentManager(),mSearchPreferences.getListCheckBoxString()));
         mTabLayout.setupWithViewPager(mViewPager);
-        mTabLayout.setTabMode(TabLayout.MODE_FIXED);
+        mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
     }
-
 
     /**
      *  IHM CONFIGURATION ----- TOOLBAR -----
@@ -179,6 +153,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (SEARCH_ARTICLE_REQUEST_CODE == requestCode && resultCode == RESULT_OK) {
             String json = data.getStringExtra(ArticleSearchActivity.BUNDLE_EXTRA_SEARCH_ARTICLE);
             save(SHARED_DEFAULT_SEARCH, json);
+            finish();
+            startActivity(getIntent());
+            load();
         }
     }
 
@@ -197,9 +174,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void save(String fileName, String json){
         mJSonPreferences = getSharedPreferences(fileName, MODE_PRIVATE);
         mJSonPreferences.edit().putString(fileName, json).apply();
-
-        Toast.makeText(this,"MAIN : " + mJSonPreferences.getString(fileName,"EMPTY"),Toast.LENGTH_LONG).show();
     }
+
+    //
 
 
 }

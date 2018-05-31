@@ -12,6 +12,7 @@ public class UnitTestSearchPreferences {
     @Test
     public void testSharedPreferencesLoading() {
         SearchPreferences searchPreferences = new SearchPreferences();
+        searchPreferences.resetCheckBoxList();
         assertEquals("Top Stories", searchPreferences.getListCheckBoxString().get(0));
         assertEquals(2, searchPreferences.getListCheckBoxString().size());
 

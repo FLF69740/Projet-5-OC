@@ -46,10 +46,10 @@ public class InterfaceTestMainActivity {
         Thread.sleep(2000);
 
         onView(withId(R.id.activity_main_drawer_layout)).perform(DrawerActions.open());
-        onView(withId(R.id.activity_main_nav_view)).perform(NavigationViewActions.navigateTo(R.id.activity_main_drawer_most_popular));
+        onView(withId(R.id.activity_main_nav_view)).perform(NavigationViewActions.navigateTo(0));
         Thread.sleep(4000);
         onView(withId(R.id.activity_main_drawer_layout)).perform(DrawerActions.open());
-        onView(withId(R.id.activity_main_nav_view)).perform(NavigationViewActions.navigateTo(R.id.activity_main_drawer_top_stories));
+        onView(withId(R.id.activity_main_nav_view)).perform(NavigationViewActions.navigateTo(1));
     }
 
     // test if ViewPager appear and swiping work
