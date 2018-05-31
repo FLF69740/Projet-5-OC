@@ -1,5 +1,9 @@
 package com.example.francoislf.mynews.Controllers.OtherActivities;
 
+import android.content.Intent;
+import android.view.View;
+import android.widget.Toast;
+
 import com.example.francoislf.mynews.Models.SearchPreferences;
 import com.example.francoislf.mynews.R;
 import com.google.gson.Gson;
@@ -7,9 +11,11 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 
-public class ArticleSearchActivity extends AbstractActivity {
+public class ArticleSearchActivity extends AbstractActivity implements ArticleSearchFragment.OnButtonClickedListener {
 
     ArticleSearchFragment mArticleSearchFragment;
+
+    public static final String BUNDLE_EXTRA_SEARCH_ARTICLE = "BUNDLE_EXTRA_SEARCH_ARTICLE";
 
     // Configure Fragment into activity
     protected void configureFragment(){
@@ -22,6 +28,7 @@ public class ArticleSearchActivity extends AbstractActivity {
         }
     }
 
+    // Set the title of the toolbar with the name of the loaded fragment
     @Override
     protected String configureToolBarTitle() {
         return "Search Articles";
@@ -39,7 +46,15 @@ public class ArticleSearchActivity extends AbstractActivity {
         if (mSearchPreferences == null) mSearchPreferences = new SearchPreferences();
 
         mArticleSearchFragment.updateFragmentData(mSearchPreferences);
+
     }
 
-
+    // put the new json to the Main Activity
+    @Override
+    public void onButtonClicked(View view, String json) {
+        Intent intent = new Intent();
+        intent.putExtra(BUNDLE_EXTRA_SEARCH_ARTICLE, json);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
 }

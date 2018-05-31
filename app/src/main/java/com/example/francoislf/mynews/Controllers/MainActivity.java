@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private SharedPreferences mJSonPreferences;
     public static final String SHARED_DEFAULT_SEARCH = "SHARED_DEFAULT_SEARCH";
+    public static final int SEARCH_ARTICLE_REQUEST_CODE = 10;
+
     private SearchPreferences mSearchPreferences;
 
     @Override
@@ -74,8 +76,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         configureViewPager();
 
         mTabLayout.getTabAt(0).select();
-
-
 
     }
 
@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      *  IHM CONFIGURATION ----- VIEWPAGER -----
      */
 
+    // Configure ViewPager
     private void configureViewPager(){
         mViewPager.setAdapter(new PageAdapter(getSupportFragmentManager()));
         mTabLayout.setupWithViewPager(mViewPager);
@@ -156,12 +157,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    // Methods in order to launch new Activity : SearchArticleActivity
     private void launchSearchArticleActivity(){
         Intent intent = new Intent(this, ArticleSearchActivity.class);
         intent.putExtra(ArticleSearchActivity.SHARED_DEFAULT_SEARCH, mJSonPreferences.getString(SHARED_DEFAULT_SEARCH, null));
-        this.startActivity(intent);
+        this.startActivityForResult(intent, SEARCH_ARTICLE_REQUEST_CODE);
     }
 
+    // Methods in order to launch new Activity : NotificationsActivity
     private void launchNotifications(){
         Intent intent = new Intent(this, NotificationsActivity.class);
         this.startActivity(intent);
@@ -171,9 +174,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      *  DATA UPDATE
      */
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (SEARCH_ARTICLE_REQUEST_CODE == requestCode && resultCode == RESULT_OK) {
+            String json = data.getStringExtra(ArticleSearchActivity.BUNDLE_EXTRA_SEARCH_ARTICLE);
+            save(SHARED_DEFAULT_SEARCH, json);
+        }
+    }
+
     // Load JSon in order to create class object with Gson library
     private void load(){
-
         mJSonPreferences = getSharedPreferences(SHARED_DEFAULT_SEARCH, MODE_PRIVATE);
         Gson gson = new Gson();
         String json = mJSonPreferences.getString(SHARED_DEFAULT_SEARCH, null);
@@ -182,5 +192,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (mSearchPreferences == null) mSearchPreferences = new SearchPreferences();
     }
+
+    // Save current class object to SharedPreferences with Gson library (JSon format)
+    private void save(String fileName, String json){
+        mJSonPreferences = getSharedPreferences(fileName, MODE_PRIVATE);
+        mJSonPreferences.edit().putString(fileName, json).apply();
+
+        Toast.makeText(this,"MAIN : " + mJSonPreferences.getString(fileName,"EMPTY"),Toast.LENGTH_LONG).show();
+    }
+
 
 }

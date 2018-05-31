@@ -14,10 +14,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.francoislf.mynews.R;
+import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+
+import butterknife.OnClick;
 
 
 /**
@@ -31,6 +34,7 @@ public class ArticleSearchFragment extends AbstractFragment {
     private String mBeginDateString = "", mEndDateString = "";
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
 
+    private OnButtonClickedListener mCallBack;
 
 
     @Override
@@ -51,7 +55,7 @@ public class ArticleSearchFragment extends AbstractFragment {
     }
 
     /**
-     *  DATE ALGORITHMS
+     *  DATES ALGORITHMS
      */
 
     DatePickerDialog.OnDateSetListener dateBegin = new DatePickerDialog.OnDateSetListener() {
@@ -88,12 +92,16 @@ public class ArticleSearchFragment extends AbstractFragment {
         }
     };
 
+    // Alert user if Start and end dates are reversed
     private void alertDateMessage(){
         Toast.makeText(this.getContext(),"Start and end dates are reversed", Toast.LENGTH_SHORT).show();
     }
 
     // Define Listeners from Calendars (Begin and End Dates)
     protected void editCalendars(){
+        mEditTextBeginDate.setText(sdf.format(mCalendarBegin.getTime()));
+        mEditTextEndDate.setText(sdf.format(mCalendarEnd.getTime()));
+
         mEditTextBeginDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,6 +119,7 @@ public class ArticleSearchFragment extends AbstractFragment {
         });
     }
 
+    // Subscribe the date String into the the concerned editText (defined with his position)
     private void updateLabel(int pos) {
 
         switch (pos){
@@ -142,9 +151,9 @@ public class ArticleSearchFragment extends AbstractFragment {
         else return true;
     }
 
-
-
-
+    /**
+     *  METHODS ABOUT BUTTON AND LISTENER
+     */
 
     // Button state
     @Override
@@ -152,17 +161,44 @@ public class ArticleSearchFragment extends AbstractFragment {
         mButtonLaunchSearch.setEnabled(this.getWidgetActionState());
     }
 
+    // Declare our interface that will be implemented by any container activity
+    public interface OnButtonClickedListener{
+        void onButtonClicked(View view, String json);
+    }
+
     // define what happened when Button search is clicked
+    @OnClick(R.id.article_search_button_search)
+    public void submit(View view){
+        mSearchPreferences.resetCheckBoxList();
+
+        for (int j = 0 ; j < mCheckBoxes.length ; j++) {
+            if (mCheckBoxes[j].isChecked()) mSearchPreferences.addCheckBox(mCheckBoxes[j].getText().toString());
+        }
+
+        mSearchPreferences.setBeginDateString(mEditTextBeginDate.getText().toString());
+        mSearchPreferences.setEndDateString(mEditTextEndDate.getText().toString());
+        mSearchPreferences.setSearchString(mEditText.getText().toString());
+
+        Gson gson = new Gson();
+        String json = gson.toJson(mSearchPreferences);
+
+        mCallBack.onButtonClicked(view, json);
+    }
+
+    // Call the method that creating callback after being attached to parent activity
     @Override
-    protected void listenerRules() {
-        mButtonLaunchSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (int j = 0 ; j < mCheckBoxes.length ; j++) {
-                    if (mCheckBoxes[j].isChecked()) mSearchPreferences.addCheckBox(mCheckBoxes[j].getText().toString());
-                }
-            }
-        });
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.createCallbackToParentActivity();
+    }
+
+    // Create callback to parent activity
+    private void createCallbackToParentActivity(){
+        try {
+            mCallBack = (OnButtonClickedListener) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(e.toString()+ " must implement OnButtonClickedListener");
+        }
     }
 
 }

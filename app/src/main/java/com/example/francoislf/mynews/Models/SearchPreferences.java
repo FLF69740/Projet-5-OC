@@ -56,4 +56,10 @@ public class SearchPreferences {
     public void addCheckBox(String checkBox){
         mListCheckBoxString.add(checkBox);
     }
+
+    public void resetCheckBoxList(){
+        mListCheckBoxString = new ArrayList<>();
+        mListCheckBoxString.add("Top Stories");
+        mListCheckBoxString.add("Most Popular");
+    }
 }

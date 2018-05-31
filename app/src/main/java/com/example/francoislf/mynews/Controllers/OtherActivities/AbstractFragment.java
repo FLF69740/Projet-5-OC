@@ -22,8 +22,9 @@ import com.example.francoislf.mynews.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public abstract class AbstractFragment extends Fragment {
+public abstract class AbstractFragment extends Fragment{
 
     protected SearchPreferences mSearchPreferences;
 
@@ -53,7 +54,6 @@ public abstract class AbstractFragment extends Fragment {
     protected abstract void hiddenWidget();
     protected abstract void widgetActionState();
     protected abstract void editCalendars();
-    protected abstract void listenerRules();
 
     @Nullable
     @Override
@@ -67,7 +67,6 @@ public abstract class AbstractFragment extends Fragment {
         this.numberCheckBoxChecked();
         this.enableOrDisableEditText();
         this.editCalendars();
-        this.listenerRules();
 
         return view;
     }
