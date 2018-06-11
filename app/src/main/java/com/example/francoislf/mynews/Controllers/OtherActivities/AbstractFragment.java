@@ -33,7 +33,7 @@ public abstract class AbstractFragment extends Fragment{
     @BindView(R.id.article_search_end_date) EditText mEditTextEndDate;
     @BindView(R.id.article_search_chekBox_arts) CheckBox mCheckBoxArts;
     @BindView(R.id.article_search_chekBox_business) CheckBox mCheckBoxBusiness;
-    @BindView(R.id.article_search_chekBox_entrepreneurs) CheckBox mCheckBoxEntrepreneurs;
+    @BindView(R.id.article_search_chekBox_technology) CheckBox mCheckBoxTechnology;
     @BindView(R.id.article_search_chekBox_politics) CheckBox mCheckBoxPolitics;
     @BindView(R.id.article_search_chekBox_sports) CheckBox mCheckBoxSports;
     @BindView(R.id.article_search_chekBox_travel) CheckBox mCheckBoxTravel;
@@ -75,7 +75,7 @@ public abstract class AbstractFragment extends Fragment{
     public void initCheckBoxTable(){
         mCheckBoxes[0] = mCheckBoxArts;
         mCheckBoxes[1] = mCheckBoxBusiness;
-        mCheckBoxes[2] = mCheckBoxEntrepreneurs;
+        mCheckBoxes[2] = mCheckBoxTechnology;
         mCheckBoxes[3] = mCheckBoxPolitics;
         mCheckBoxes[4] = mCheckBoxSports;
         mCheckBoxes[5] = mCheckBoxTravel;

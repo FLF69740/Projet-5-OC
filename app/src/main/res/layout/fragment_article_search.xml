@@ -46,7 +46,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                android:editable="false"
                 android:focusable="false"/>
 
             <CheckBox
@@ -66,10 +65,10 @@
                 android:paddingLeft="5dp"/>
 
             <CheckBox
-                android:id="@+id/article_search_chekBox_entrepreneurs"
+                android:id="@+id/article_search_chekBox_technology"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Entrepreneurs"
+                android:text="Technology"
                 android:layout_marginTop="5dp"
                 android:paddingLeft="5dp"/>
 
