@@ -10,9 +10,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.francoislf.mynews.Models.ArticlesStreams;
-import com.example.francoislf.mynews.Models.MostPopular;
-import com.example.francoislf.mynews.Models.TopStories;
+import com.example.francoislf.mynews.Models.HttpRequest.ArticlesStreams;
+import com.example.francoislf.mynews.Models.HttpRequest.MostPopular;
+import com.example.francoislf.mynews.Models.HttpRequest.TopStories;
 import com.example.francoislf.mynews.R;
 
 import java.util.List;
@@ -31,7 +31,6 @@ public class PageFragment extends Fragment{
     @BindView(R.id.fragment_page_title) TextView mTextView;
 
     public static final String KEY_TITLE = "KEY_TITLE";
-    private String mIndexArticles = "";
 
     private Disposable mDisposable;
 
@@ -61,7 +60,6 @@ public class PageFragment extends Fragment{
 
         getArticles(getArguments().getString(KEY_TITLE,""));
 
-        mTextView.setText(mIndexArticles);
         mLinearLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
 
         return view;
@@ -71,12 +69,13 @@ public class PageFragment extends Fragment{
 
         switch (indexArticles){
             case "Top Stories":
-                executeHttpRequestTopStories();
+                executeHttpRequestTopStories("home");
                 break;
             case "Most Popular" :
                 executeHttpRequestMostPopular();
                 break;
                 default:
+                    executeHttpRequestTopStories(indexArticles.toLowerCase());
                     break;
         }
 
@@ -101,8 +100,8 @@ public class PageFragment extends Fragment{
      */
 
     // 1 méthode this.disposable pour topStories
-    private void executeHttpRequestTopStories(){
-        this.mDisposable = ArticlesStreams.streamTopStories()
+    private void executeHttpRequestTopStories(String section){
+        this.mDisposable = ArticlesStreams.streamTopStories(section)
                 .subscribeWith(new DisposableObserver<TopStories>() {
                     @Override
                     public void onNext(TopStories topStories) {
@@ -112,12 +111,13 @@ public class PageFragment extends Fragment{
                     @Override
                     public void onError(Throwable e) {
                         Log.i("TAGO", "On Error " + Log.getStackTraceString(e));
+                        mTextView.setText("ERROR : page uploading failed");
                     }
 
                     @Override
                     public void onComplete() {
                         Log.i("TAGO", "TopStories streams on complete");
-                        mTextView.setText("ERROR : page uploading failed");
+
                     }
                 });
     }
@@ -144,12 +144,13 @@ public class PageFragment extends Fragment{
                     @Override
                     public void onError(Throwable e) {
                         Log.i("TAGO", "On Error " + Log.getStackTraceString(e));
+                        mTextView.setText("ERROR : page uploading failed");
                     }
 
                     @Override
                     public void onComplete() {
                         Log.i("TAGO", "Most popular streams on complete");
-                        mTextView.setText("ERROR : page uploading failed");
+
                     }
                 });
     }

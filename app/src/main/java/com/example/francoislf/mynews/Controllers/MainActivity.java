@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import com.example.francoislf.mynews.Controllers.OtherActivities.ArticleSearchActivity;
 import com.example.francoislf.mynews.Controllers.OtherActivities.NotificationsActivity;
+import com.example.francoislf.mynews.Controllers.OtherActivities.SearchResultActivity;
 import com.example.francoislf.mynews.Models.SearchPreferences;
 import com.example.francoislf.mynews.R;
 import com.google.gson.reflect.TypeToken;
@@ -156,6 +157,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             finish();
             startActivity(getIntent());
             load();
+            Intent intent = new Intent(this, SearchResultActivity.class);
+            intent.putExtra(ArticleSearchActivity.SHARED_DEFAULT_SEARCH, mJSonPreferences.getString(SHARED_DEFAULT_SEARCH, null));
+            this.startActivity(intent);
         }
     }
 

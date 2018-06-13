@@ -1,4 +1,4 @@
-package com.example.francoislf.mynews.Models;
+package com.example.francoislf.mynews.Models.HttpRequest;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;
