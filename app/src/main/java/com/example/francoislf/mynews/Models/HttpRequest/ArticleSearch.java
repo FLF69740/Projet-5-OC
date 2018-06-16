@@ -189,7 +189,7 @@ public class ArticleSearch {
         @SerializedName("document_type")
         @Expose
         private String documentType;
-        @SerializedName("new_desk")
+        @SerializedName("news_desk")
         @Expose
         private String newDesk;
         @SerializedName("type_of_material")
