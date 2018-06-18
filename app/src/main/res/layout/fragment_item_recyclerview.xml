@@ -2,8 +2,9 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="30dp"
+    android:layout_height="90dp"
+    android:paddingTop="5dp"
+    android:paddingLeft="5dp"
     android:orientation="horizontal">
 
     <LinearLayout
@@ -12,32 +13,45 @@
         android:orientation="vertical"
         android:layout_weight="4">
 
-
+        <ImageView
+            android:id="@+id/id_image_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:paddingTop="7dp"
+        android:layout_marginLeft="10dp">
 
         <TextView
             android:id="@+id/id_section_recyclerView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"/>
+            android:layout_alignParentLeft="true"
+            android:textStyle="bold"
+            android:textSize="13dp"
+            android:textColor="@android:color/black"/>
 
         <TextView
             android:id="@+id/id_date_recyclerView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"
+            android:paddingRight="5dp"
+            android:textSize="13dp"
+            android:textColor="@android:color/black"/>
 
         <TextView
             android:id="@+id/id_title_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/id_section_recyclerView"/>
+            android:layout_below="@+id/id_section_recyclerView"
+            android:paddingTop="7dp"
+            android:textSize="16dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"

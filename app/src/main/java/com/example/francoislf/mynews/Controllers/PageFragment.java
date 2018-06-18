@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import com.bumptech.glide.Glide;
 import com.example.francoislf.mynews.Models.ArticleItem;
 import com.example.francoislf.mynews.Models.HttpRequest.ArticlesStreams;
 import com.example.francoislf.mynews.Models.HttpRequest.MostPopular;
@@ -60,7 +61,6 @@ public class PageFragment extends Fragment{
 
         configureRecyclerView();
         getArticles(getArguments().getString(KEY_TITLE,""));
-
         mLinearLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
 
         return view;
@@ -69,7 +69,7 @@ public class PageFragment extends Fragment{
     // Configure RecyclerView, Adapter, LayoutManager & glue it together
     private void configureRecyclerView(){
         this.mArticleItemList = new ArrayList<>();
-        this.mAdapter = new ArticleItemAdapter(this.mArticleItemList);
+        this.mAdapter = new ArticleItemAdapter(this.mArticleItemList, Glide.with(this));
         this.mRecyclerView.setAdapter(this.mAdapter);
         this.mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }

@@ -3,8 +3,6 @@ package com.example.francoislf.mynews;
 import com.example.francoislf.mynews.Models.DateFormatTransformer;
 
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class UnitTestDateFormatTransformer {

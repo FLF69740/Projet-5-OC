@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.bumptech.glide.Glide;
 import com.example.francoislf.mynews.Models.ArticleItem;
 import com.example.francoislf.mynews.Models.DateFormatTransformer;
 import com.example.francoislf.mynews.Models.HttpRequest.ArticleSearch;
@@ -64,7 +66,7 @@ public class SearchResultFragment extends Fragment {
     // Configure RecyclerView, Adapter, LayoutManager & glue it together
     private void configureRecyclerView(){
         this.mArticleItemList = new ArrayList<>();
-        this.mAdapter = new ArticleItemAdapter(this.mArticleItemList);
+        this.mAdapter = new ArticleItemAdapter(this.mArticleItemList, Glide.with(this));
         this.mRecyclerView.setAdapter(this.mAdapter);
         this.mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
@@ -124,7 +126,7 @@ public class SearchResultFragment extends Fragment {
                 mArticleItem.setPubDate(results.get(i).getPubDate());
                 mArticleItem.setTitle(results.get(i).getSnippet());
                 if (!results.get(i).getMultimedia().isEmpty())
-                    mArticleItem.setPhotoUrl("" + results.get(i).getMultimedia().get(0).getUrl());
+                    mArticleItem.setPhotoUrl("https://static01.nyt.com/" + results.get(i).getMultimedia().get(0).getUrl());
                 else mArticleItem.setPhotoUrl("NADA");
                 mArticleItem.setWebUrl(results.get(i).getWebUrl());
 
