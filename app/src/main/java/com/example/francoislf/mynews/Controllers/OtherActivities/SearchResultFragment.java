@@ -1,5 +1,7 @@
 package com.example.francoislf.mynews.Controllers.OtherActivities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -117,23 +119,43 @@ public class SearchResultFragment extends Fragment {
 
     // Update UI
     private void getUpdateUI(ArticleSearch articleSearch){
-        List<ArticleSearch.Doc> results = articleSearch.getResponse().getDocs();
-        if (!results.isEmpty()) {
-            for (int i = 0; i < results.size(); i++) {
-                mArticleItem = new ArticleItem();
-                mArticleItem.setSection(mSearchPreferences.getSearchString());
-                mArticleItem.setSubSection(results.get(i).getNewDesk());
-                mArticleItem.setPubDate(results.get(i).getPubDate());
-                mArticleItem.setTitle(results.get(i).getSnippet());
-                if (!results.get(i).getMultimedia().isEmpty())
-                    mArticleItem.setPhotoUrl("https://static01.nyt.com/" + results.get(i).getMultimedia().get(0).getUrl());
-                else mArticleItem.setPhotoUrl("NADA");
-                mArticleItem.setWebUrl(results.get(i).getWebUrl());
+        if (!articleSearch.getResponse().getDocs().isEmpty()) {
+            List<ArticleSearch.Doc> results = articleSearch.getResponse().getDocs();
+            if (!results.isEmpty()) {
+                for (int i = 0; i < results.size(); i++) {
+                    mArticleItem = new ArticleItem();
+                    mArticleItem.setSection(mSearchPreferences.getSearchString());
+                    mArticleItem.setSubSection(results.get(i).getNewDesk());
+                    mArticleItem.setPubDate(results.get(i).getPubDate());
+                    mArticleItem.setTitle(results.get(i).getSnippet());
+                    if (!results.get(i).getMultimedia().isEmpty())
+                        mArticleItem.setPhotoUrl("https://static01.nyt.com/" + results.get(i).getMultimedia().get(0).getUrl());
+                    else mArticleItem.setPhotoUrl("NADA");
+                    mArticleItem.setWebUrl(results.get(i).getWebUrl());
 
-                mArticleItemList.add(mArticleItem);
+                    mArticleItemList.add(mArticleItem);
+                }
             }
+            mAdapter.notifyDataSetChanged();
         }
-        mAdapter.notifyDataSetChanged();
+        else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+            builder.setTitle("Response :")
+                    .setMessage("No article found for your request\nPlease change filters and try again.")
+                    .setPositiveButton("Return", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            try {
+                                finalize();
+                            } catch (Throwable throwable) {
+                                throwable.printStackTrace();
+                            }
+                        }
+                    })
+                    .create()
+                    .show();
+        }
     }
 
     /**
