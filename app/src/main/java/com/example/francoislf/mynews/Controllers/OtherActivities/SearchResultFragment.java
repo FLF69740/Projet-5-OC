@@ -10,8 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.Toast;
 import com.bumptech.glide.Glide;
+import com.example.francoislf.mynews.Controllers.ItemClickSupport;
 import com.example.francoislf.mynews.Models.ArticleItem;
 import com.example.francoislf.mynews.Models.DateFormatTransformer;
 import com.example.francoislf.mynews.Models.HttpRequest.ArticleSearch;
@@ -52,6 +53,7 @@ public class SearchResultFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         configureRecyclerView();
+        this.configureOnClickRecyclerView();
 
         return view;
     }
@@ -71,6 +73,18 @@ public class SearchResultFragment extends Fragment {
         this.mAdapter = new ArticleItemAdapter(this.mArticleItemList, Glide.with(this));
         this.mRecyclerView.setAdapter(this.mAdapter);
         this.mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    }
+
+    // Configure item click on RecyclerView
+    private void configureOnClickRecyclerView(){
+        ItemClickSupport.addTo(mRecyclerView, R.layout.fragment_item_recyclerview)
+                .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+                    @Override
+                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                        ArticleItem articleItem = mAdapter.getArticle(position);
+                        Toast.makeText(getContext(),articleItem.getWebUrl(),Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 
     /**
@@ -130,7 +144,7 @@ public class SearchResultFragment extends Fragment {
                     mArticleItem.setTitle(results.get(i).getSnippet());
                     if (!results.get(i).getMultimedia().isEmpty())
                         mArticleItem.setPhotoUrl("https://static01.nyt.com/" + results.get(i).getMultimedia().get(0).getUrl());
-                    else mArticleItem.setPhotoUrl("NADA");
+                    else mArticleItem.setPhotoUrl("http://www.idfmoteurs.com/images/pas-image-disponible.png");
                     mArticleItem.setWebUrl(results.get(i).getWebUrl());
 
                     mArticleItemList.add(mArticleItem);

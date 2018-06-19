@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.francoislf.mynews.Models.ArticleItem;
 import com.example.francoislf.mynews.Models.HttpRequest.ArticlesStreams;
@@ -43,7 +44,6 @@ public class PageFragment extends Fragment{
     // Methods to create new instance of fragment
     public static PageFragment newInstance(String title){
         PageFragment fragment = new PageFragment();
-
         Bundle bundle = new Bundle();
         bundle.putString(KEY_TITLE, title);
         fragment.setArguments(bundle);
@@ -52,15 +52,13 @@ public class PageFragment extends Fragment{
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_page, container, false);
-
         ButterKnife.bind(this, view);
 
         configureRecyclerView();
         getArticles(getArguments().getString(KEY_TITLE,""));
+        this.configureOnClickRecyclerView();
         mLinearLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
 
         return view;
@@ -74,19 +72,24 @@ public class PageFragment extends Fragment{
         this.mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
+    // Configure item click on RecyclerView
+    private void configureOnClickRecyclerView(){
+        ItemClickSupport.addTo(mRecyclerView, R.layout.fragment_item_recyclerview)
+                .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+                    @Override
+                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                        ArticleItem articleItem = mAdapter.getArticle(position);
+                        Toast.makeText(getContext(),articleItem.getWebUrl(),Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
     // switch in order to distribute the good http request
     public void getArticles(String indexArticles){
-
         switch (indexArticles){
-            case "Top Stories":
-                executeHttpRequestTopStories("home");
-                break;
-            case "Most Popular" :
-                executeHttpRequestMostPopular();
-                break;
-                default:
-                    executeHttpRequestTopStories(indexArticles.toLowerCase());
-                    break;
+            case "Top Stories": executeHttpRequestTopStories("home"); break;
+            case "Most Popular" : executeHttpRequestMostPopular(); break;
+                default: executeHttpRequestTopStories(indexArticles.toLowerCase()); break;
         }
     }
 
@@ -139,7 +142,7 @@ public class PageFragment extends Fragment{
             mArticleItem.setPubDate(results.get(i).getPublishedDate());
             mArticleItem.setTitle(results.get(i).getTitle());
         if (!results.get(i).getMultimedia().isEmpty())   mArticleItem.setPhotoUrl("" + results.get(i).getMultimedia().get(0).getUrl());
-        else mArticleItem.setPhotoUrl("NADA");
+        else mArticleItem.setPhotoUrl("http://www.idfmoteurs.com/images/pas-image-disponible.png");
             mArticleItem.setWebUrl(results.get(i).getUrl());
 
             mArticleItemList.add(mArticleItem);
