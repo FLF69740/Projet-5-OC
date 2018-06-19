@@ -20,13 +20,14 @@
         </activity>
         <activity
             android:name=".Controllers.OtherActivities.ArticleSearchActivity"
-            android:parentActivityName=".Controllers.MainActivity"></activity>
+            android:parentActivityName=".Controllers.MainActivity" />
         <activity
             android:name=".Controllers.OtherActivities.NotificationsActivity"
-            android:parentActivityName=".Controllers.MainActivity"></activity>
+            android:parentActivityName=".Controllers.MainActivity" />
         <activity
             android:name=".Controllers.OtherActivities.SearchResultActivity"
-            android:parentActivityName=".Controllers.MainActivity"></activity>
+            android:parentActivityName=".Controllers.MainActivity" />
+        <activity android:name=".Controllers.OtherActivities.WebViewActivity"></activity>
     </application>
 
 </manifest>

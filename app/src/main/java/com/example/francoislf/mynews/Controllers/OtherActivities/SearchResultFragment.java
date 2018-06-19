@@ -1,6 +1,7 @@
 package com.example.francoislf.mynews.Controllers.OtherActivities;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.francoislf.mynews.Controllers.ItemClickSupport;
 import com.example.francoislf.mynews.Models.ArticleItem;
@@ -38,30 +38,27 @@ public class SearchResultFragment extends Fragment {
     private List<ArticleItem> mArticleItemList;
     private ArticleItem mArticleItem;
     private ArticleItemAdapter mAdapter;
+    private OnButtonClickedListener mCallback;
 
     @BindView(R.id.fragment_recyclerview_search) RecyclerView mRecyclerView;
 
+    // Declare our interface that will be implemented by any container activity
+    public interface OnButtonClickedListener{void onButtonClicked(View view, String url);}
 
     public SearchResultFragment() {}
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search_result, container, false);
-
         ButterKnife.bind(this, view);
-
         configureRecyclerView();
         this.configureOnClickRecyclerView();
-
         return view;
     }
 
     // implement datas from searchPreferences to Http Request process
     public void updateFragmentData(SearchPreferences searchPreferences){
         this.mSearchPreferences = searchPreferences;
-
         this.executeHttpRequest(mSearchPreferences.getSearchString(),
                 new DateFormatTransformer(mSearchPreferences.getBeginDateString()).getDateStringOutput(),
                 new DateFormatTransformer(mSearchPreferences.getEndDateString()).getDateStringOutput());
@@ -82,9 +79,24 @@ public class SearchResultFragment extends Fragment {
                     @Override
                     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                         ArticleItem articleItem = mAdapter.getArticle(position);
-                        Toast.makeText(getContext(),articleItem.getWebUrl(),Toast.LENGTH_LONG).show();
+                        mCallback.onButtonClicked(v, articleItem.getWebUrl());
                     }
                 });
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.createCallbackToParentActivity();
+    }
+
+    // Create callback to parent activity
+    private void createCallbackToParentActivity(){
+        try {
+            mCallback = (OnButtonClickedListener) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(e.toString()+ " must implement OnButtonClickedListener");
+        }
     }
 
     /**
@@ -154,7 +166,6 @@ public class SearchResultFragment extends Fragment {
         }
         else {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
             builder.setTitle("Response :")
                     .setMessage("No article found for your request\nPlease change filters and try again.")
                     .setPositiveButton("Return", new DialogInterface.OnClickListener() {
@@ -166,9 +177,7 @@ public class SearchResultFragment extends Fragment {
                                 throwable.printStackTrace();
                             }
                         }
-                    })
-                    .create()
-                    .show();
+                    }).create().show();
         }
     }
 
@@ -186,5 +195,4 @@ public class SearchResultFragment extends Fragment {
         super.onDestroyView();
         this.disposeWhenDestroy();
     }
-
 }

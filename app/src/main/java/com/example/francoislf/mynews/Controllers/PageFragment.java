@@ -1,5 +1,6 @@
 package com.example.francoislf.mynews.Controllers;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
+import com.example.francoislf.mynews.Controllers.OtherActivities.SearchResultFragment;
 import com.example.francoislf.mynews.Models.ArticleItem;
 import com.example.francoislf.mynews.Models.HttpRequest.ArticlesStreams;
 import com.example.francoislf.mynews.Models.HttpRequest.MostPopular;
@@ -38,6 +40,10 @@ public class PageFragment extends Fragment{
     private List<ArticleItem> mArticleItemList;
     private ArticleItem mArticleItem;
     private ArticleItemAdapter mAdapter;
+    private OnButtonClickedListener mCallbackMain;
+
+    // Declare our interface that will be implemented by any container activity
+    public interface OnButtonClickedListener{void onButtonClicked(View view, String url);}
 
     public PageFragment() {}
 
@@ -79,7 +85,7 @@ public class PageFragment extends Fragment{
                     @Override
                     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                         ArticleItem articleItem = mAdapter.getArticle(position);
-                        Toast.makeText(getContext(),articleItem.getWebUrl(),Toast.LENGTH_LONG).show();
+                        mCallbackMain.onButtonClicked(v, articleItem.getWebUrl());
                     }
                 });
     }
@@ -189,5 +195,20 @@ public class PageFragment extends Fragment{
             mArticleItemList.add(mArticleItem);
         }
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.createCallbackToParentActivity();
+    }
+
+    // Create callback to parent activity
+    private void createCallbackToParentActivity(){
+        try {
+            mCallbackMain = (PageFragment.OnButtonClickedListener) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(e.toString()+ " must implement OnButtonClickedListener");
+        }
     }
 }

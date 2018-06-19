@@ -1,9 +1,12 @@
 package com.example.francoislf.mynews.Controllers.OtherActivities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.View;
 
 import com.example.francoislf.mynews.Models.SearchPreferences;
 import com.example.francoislf.mynews.R;
@@ -15,15 +18,14 @@ import java.lang.reflect.Type;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SearchResultActivity extends AppCompatActivity {
+public class SearchResultActivity extends AppCompatActivity implements SearchResultFragment.OnButtonClickedListener {
 
     public static final String SHARED_DEFAULT_SEARCH = "SHARED_DEFAULT_SEARCH";
     private SearchPreferences mSearchPreferences;
 
     SearchResultFragment mSearchResultFragment;
 
-    @BindView(R.id.activity_search_result_toolbar)
-    Toolbar mToolbar;
+    @BindView(R.id.activity_search_result_toolbar) Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,4 +74,10 @@ public class SearchResultActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onButtonClicked(View view, String url) {
+        Intent intent = new Intent(this, WebViewActivity.class);
+        intent.putExtra(WebViewActivity.LINK_WEBVIEW, url);
+        startActivity(intent);
+    }
 }

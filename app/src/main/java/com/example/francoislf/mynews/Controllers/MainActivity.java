@@ -13,11 +13,15 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
 import com.example.francoislf.mynews.Controllers.OtherActivities.ArticleSearchActivity;
 import com.example.francoislf.mynews.Controllers.OtherActivities.NotificationsActivity;
 import com.example.francoislf.mynews.Controllers.OtherActivities.SearchResultActivity;
+import com.example.francoislf.mynews.Controllers.OtherActivities.WebViewActivity;
 import com.example.francoislf.mynews.Models.SearchPreferences;
 import com.example.francoislf.mynews.R;
 import com.google.gson.reflect.TypeToken;
@@ -27,7 +31,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, PageFragment.OnButtonClickedListener {
 
     @BindView(R.id.activity_main_toolbar) Toolbar mToolbar;
     @BindView(R.id.activity_main_drawer_layout) DrawerLayout mDrawerLayout;
@@ -180,7 +184,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mJSonPreferences.edit().putString(fileName, json).apply();
     }
 
-    //
-
-
+    @Override
+    public void onButtonClicked(View view, String url) {
+        Intent intent = new Intent(this, WebViewActivity.class);
+        intent.putExtra(WebViewActivity.LINK_WEBVIEW, url);
+        startActivity(intent);
+    }
 }
