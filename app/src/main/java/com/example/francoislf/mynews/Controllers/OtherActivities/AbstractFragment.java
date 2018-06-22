@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.francoislf.mynews.Models.SearchPreferences;
 import com.example.francoislf.mynews.R;
@@ -154,6 +155,8 @@ public abstract class AbstractFragment extends Fragment{
                 if (mCheckBoxes[i].getText().toString().equals(mSearchPreferences.getListCheckBoxString().get(j)))
                     mCheckBoxes[i].setChecked(true);
         }
+
+        mNotificationSwitch.setChecked(mSearchPreferences.getSwitchState());
 
     }
 }

@@ -1,15 +1,29 @@
 package com.example.francoislf.mynews.Controllers.OtherActivities;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.support.v4.app.NotificationManagerCompat;
+import android.widget.Toast;
+
+import com.example.francoislf.mynews.Controllers.Utils.MyAlarmReceiver;
 import com.example.francoislf.mynews.Models.SearchPreferences;
 import com.example.francoislf.mynews.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.Calendar;
 
-public class NotificationsActivity extends AbstractActivity {
+public class NotificationsActivity extends AbstractActivity implements NotificationsFragment.onSaveSituationListener {
 
+    public static final int NOTIFICATION_CODE = 100;
+    private PendingIntent mPendingIntent;
     NotificationsFragment mNotificationsFragment;
+    private SharedPreferences mJSonNotifications;
+    public static final String SHARED_DEFAULT_NOTIFICATIONS = "SHARED_DEFAULT_NOTIFICATIONS";
 
     @Override
     protected void configureFragment() {
@@ -30,14 +44,69 @@ public class NotificationsActivity extends AbstractActivity {
     @Override
     public void onResume() {
         super.onResume();
+        mNotificationsFragment.switckButtonWork();
+        load();
+    }
 
+
+    // Load JSon in order to create class object with Gson library
+    private void load(){
+        mJSonNotifications = getSharedPreferences(SHARED_DEFAULT_NOTIFICATIONS, MODE_PRIVATE);
         Gson gson = new Gson();
-        String json = getIntent().getStringExtra(SHARED_DEFAULT_SEARCH);
+        String json = mJSonNotifications.getString(SHARED_DEFAULT_NOTIFICATIONS, null);
         Type type = new TypeToken<SearchPreferences>() {}.getType();
         mSearchPreferences = gson.fromJson(json, type);
 
         if (mSearchPreferences == null) mSearchPreferences = new SearchPreferences();
-
         mNotificationsFragment.updateFragmentData(mSearchPreferences);
+    }
+
+    // Save current class object to SharedPreferences with Gson library (JSon format)
+    private void save(String fileName, String json){
+        mJSonNotifications = getSharedPreferences(fileName, MODE_PRIVATE);
+        mJSonNotifications.edit().putString(fileName, json).apply();
+    }
+
+    /**
+     *
+     *  ALARM MANAGER
+     */
+
+
+    private void configureAlarmManager(String following){
+        Intent intent = new Intent(NotificationsActivity.this, MyAlarmReceiver.class);
+        intent.putExtra("extra", following);
+        mPendingIntent = PendingIntent.getBroadcast(NotificationsActivity.this,0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    private void startAlarm(){
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 17);
+        calendar.set(Calendar.MINUTE, 10);
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, mPendingIntent);
+        Toast.makeText(this,"NOTIFICATION SYSTEM ACTIVATED", Toast.LENGTH_SHORT).show();
+    }
+
+    private void stopAlarm(){
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(mPendingIntent);
+        Toast.makeText(this,"NOTIFICATION SYSTEM STOPPED", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     *  Callback
+     */
+
+    @Override
+    public void onSaveSituation(String json, boolean bool) {
+        save(SHARED_DEFAULT_NOTIFICATIONS, json);
+        this.configureAlarmManager("NOTIFICATIONS");
+        if (bool) startAlarm();
+        else stopAlarm();
     }
 }

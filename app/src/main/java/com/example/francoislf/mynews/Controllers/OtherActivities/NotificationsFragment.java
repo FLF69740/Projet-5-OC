@@ -1,10 +1,22 @@
 package com.example.francoislf.mynews.Controllers.OtherActivities;
 
+import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.Toast;
 
 import com.example.francoislf.mynews.R;
+import com.google.gson.Gson;
+
+import butterknife.OnClick;
 
 public class NotificationsFragment extends AbstractFragment {
+
+    private onSaveSituationListener mCallBack;
+
+
     @Override
     protected AbstractFragment newInstance() {
         return new NotificationsFragment();
@@ -28,10 +40,61 @@ public class NotificationsFragment extends AbstractFragment {
     @Override
     protected void widgetActionState() {
         mNotificationSwitch.setEnabled(editTextNotEmpty() && checkBoxChecked());
+        mNotificationSwitch.setChecked(false);
     }
 
     @Override
     protected void editCalendars() {// do nothing
+    }
+
+    // upload the listener to the switch button
+    public void switckButtonWork(){
+        mNotificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                submit(isChecked);
+            }
+        });
+    }
+
+    public interface onSaveSituationListener{
+        void onSaveSituation(String json, boolean bool);
+    }
+
+    // Call the method that creating callback after being attached to parent activity
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.createCallbackToParentActivity();
+    }
+
+    // Create callback to parent activity
+    private void createCallbackToParentActivity(){
+        try {
+            mCallBack = (NotificationsFragment.onSaveSituationListener) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(e.toString()+ " must implement OnButtonClickedListener");
+        }
+    }
+
+    // define what happened when Switch Notification state changed
+    public void submit(boolean bool){
+        mSearchPreferences.resetCheckBoxList();
+
+        for (int j = 0 ; j < mCheckBoxes.length ; j++) {
+            if (mCheckBoxes[j].isChecked()) mSearchPreferences.addCheckBox(mCheckBoxes[j].getText().toString());
+        }
+
+        mSearchPreferences.setBeginDateString(mEditTextBeginDate.getText().toString());
+        mSearchPreferences.setEndDateString(mEditTextEndDate.getText().toString());
+        mSearchPreferences.setSearchString(mEditText.getText().toString());
+
+        mSearchPreferences.setSwitchState(Boolean.toString(bool));
+
+        Gson gson = new Gson();
+        String json = gson.toJson(mSearchPreferences);
+
+        mCallBack.onSaveSituation(json, bool);
     }
 
 

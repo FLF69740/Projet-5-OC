@@ -20,8 +20,10 @@
                 android:id="@+id/menu_activity_parametres"
                 android:title="Notifications"/>
             <item
+                android:id="@+id/menu_activity_help"
                 android:title="Help"/>
             <item
+                android:id="@+id/menu_activity_about"
                 android:title="About"/>
 
         </menu>

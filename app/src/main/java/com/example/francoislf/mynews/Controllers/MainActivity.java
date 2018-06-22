@@ -1,5 +1,6 @@
 package com.example.francoislf.mynews.Controllers;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -11,13 +12,12 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
 import com.example.francoislf.mynews.Controllers.OtherActivities.ArticleSearchActivity;
 import com.example.francoislf.mynews.Controllers.OtherActivities.NotificationsActivity;
 import com.example.francoislf.mynews.Controllers.OtherActivities.SearchResultActivity;
@@ -42,14 +42,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private SharedPreferences mJSonPreferences;
     public static final String SHARED_DEFAULT_SEARCH = "SHARED_DEFAULT_SEARCH";
     public static final int SEARCH_ARTICLE_REQUEST_CODE = 10;
-
     private SearchPreferences mSearchPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         ButterKnife.bind(this);
 
         load();
@@ -126,14 +124,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (item.getItemId())
         {
-            case R.id.menu_activity_parametres :
-                launchNotifications();
-                return true;
-            case  R.id.menu_activity_search :
-                launchSearchArticleActivity();
-                return true;
+            case R.id.menu_activity_parametres : launchNotifications(); return true;
+            case  R.id.menu_activity_search : launchSearchArticleActivity(); return true;
+            case R.id.menu_activity_about : launchAboutBuilder(); return true;
             default : return super.onOptionsItemSelected(item);
         }
+    }
+
+    // Show the Dialog builder of About section
+    private void launchAboutBuilder(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("ABOUT")
+                .setMessage("MY NEWS : v 1.0.0\nbuilt : 2018/07/01\n" +
+                            "Powered with Android Studio for Android 4.4 and higher\n\n" +
+                            "created by FLT Starcraft")
+                .setPositiveButton("CLOSE", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            this.finalize();
+                        } catch (Throwable throwable) {
+                            throwable.printStackTrace();
+                        }
+                    }
+                }).create().show();
     }
 
     // Methods in order to launch new Activity : SearchArticleActivity

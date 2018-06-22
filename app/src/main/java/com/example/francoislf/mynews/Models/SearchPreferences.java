@@ -9,7 +9,10 @@ public class SearchPreferences {
     private String mEndDateString;
     private ArrayList<String> mListCheckBoxString;
 
+    private Boolean mSwitchState;
+
     public SearchPreferences(){
+        mSwitchState = false;
         mSearchString = "";
         mBeginDateString = "";
         mEndDateString = "";
@@ -61,5 +64,14 @@ public class SearchPreferences {
         mListCheckBoxString = new ArrayList<>();
         mListCheckBoxString.add("Top Stories");
         mListCheckBoxString.add("Most Popular");
+    }
+
+    public Boolean getSwitchState() {
+        return mSwitchState;
+    }
+
+    public void setSwitchState(String switchState) {
+        if (switchState.equals("true"))mSwitchState = true;
+        else mSwitchState = false;
     }
 }
