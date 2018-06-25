@@ -1,4 +1,4 @@
-package com.example.francoislf.mynews.Controllers;
+package com.example.francoislf.mynews.Controllers.Utils;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

@@ -22,20 +22,13 @@ import java.util.Locale;
 
 import butterknife.OnClick;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ArticleSearchFragment extends AbstractFragment {
 
     private Calendar mCalendarBegin = Calendar.getInstance();
     private Calendar mCalendarEnd = Calendar.getInstance();
-
     private String mBeginDateString = "", mEndDateString = "";
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
-
     private OnButtonClickedListener mCallBack;
-
 
     @Override
     protected AbstractFragment newInstance() {
@@ -65,7 +58,6 @@ public class ArticleSearchFragment extends AbstractFragment {
             calendar.set(Calendar.YEAR, year);
             calendar.set(Calendar.MONTH, month);
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
             setDateString(calendar,0);
             if (getComparationDates(calendar, mCalendarEnd)){
                 updateLabel(0);
@@ -82,7 +74,6 @@ public class ArticleSearchFragment extends AbstractFragment {
             calendar.set(Calendar.YEAR, year);
             calendar.set(Calendar.MONTH, month);
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
             setDateString(calendar,1);
             if (getComparationDates(mCalendarBegin, calendar)){
                 updateLabel(1);
@@ -121,12 +112,10 @@ public class ArticleSearchFragment extends AbstractFragment {
 
     // Subscribe the date String into the the concerned editText (defined with his position)
     private void updateLabel(int pos) {
-
         switch (pos){
             case 0 : mEditTextBeginDate.setText(getDateString(pos)); break;
             case 1 : mEditTextEndDate.setText(getDateString(pos)); break;
         }
-
         if ((pos == 1) && (mEditTextBeginDate.getText().toString().isEmpty())) {
             mEditTextBeginDate.setText(getDateString(pos));
             mCalendarBegin = mCalendarEnd;
@@ -178,10 +167,8 @@ public class ArticleSearchFragment extends AbstractFragment {
         mSearchPreferences.setBeginDateString(mEditTextBeginDate.getText().toString());
         mSearchPreferences.setEndDateString(mEditTextEndDate.getText().toString());
         mSearchPreferences.setSearchString(mEditText.getText().toString());
-
         Gson gson = new Gson();
         String json = gson.toJson(mSearchPreferences);
-
         mCallBack.onButtonClicked(view, json);
     }
 
@@ -200,5 +187,4 @@ public class ArticleSearchFragment extends AbstractFragment {
             throw new ClassCastException(e.toString()+ " must implement OnButtonClickedListener");
         }
     }
-
 }

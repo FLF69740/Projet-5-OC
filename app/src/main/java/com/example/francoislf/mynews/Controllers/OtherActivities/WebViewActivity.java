@@ -43,7 +43,7 @@ public class WebViewActivity extends AppCompatActivity {
     protected void configureToolBar(){
         setSupportActionBar(mToolbar);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle("WEB VIEW ARTICLE");
     }
 

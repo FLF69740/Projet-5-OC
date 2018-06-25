@@ -12,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
-import com.example.francoislf.mynews.Controllers.ItemClickSupport;
+import com.example.francoislf.mynews.Controllers.Utils.ItemClickSupport;
 import com.example.francoislf.mynews.Models.ArticleItem;
 import com.example.francoislf.mynews.Models.DateFormatTransformer;
 import com.example.francoislf.mynews.Models.HttpRequest.ArticleSearch;
@@ -28,9 +28,6 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableObserver;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class SearchResultFragment extends Fragment {
 
     private SearchPreferences mSearchPreferences;
@@ -39,6 +36,7 @@ public class SearchResultFragment extends Fragment {
     private ArticleItem mArticleItem;
     private ArticleItemAdapter mAdapter;
     private OnButtonClickedListener mCallback;
+    private Boolean mBadIteration;
 
     @BindView(R.id.fragment_recyclerview_search) RecyclerView mRecyclerView;
 
@@ -51,6 +49,7 @@ public class SearchResultFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search_result, container, false);
         ButterKnife.bind(this, view);
+        mBadIteration = false;
         configureRecyclerView();
         this.configureOnClickRecyclerView();
         return view;
@@ -112,12 +111,10 @@ public class SearchResultFragment extends Fragment {
                     public void onNext(ArticleSearch articleSearch) {
                         getUpdateUI(articleSearch);
                     }
-
                     @Override
                     public void onError(Throwable e) {
                         Log.i("TAGO", "On Error " + Log.getStackTraceString(e));
                     }
-
                     @Override
                     public void onComplete() {
                         Log.i("TAGO", "TopStories streams on complete");
@@ -162,7 +159,10 @@ public class SearchResultFragment extends Fragment {
                     mArticleItemList.add(mArticleItem);
                 }
             }
-            mAdapter.notifyDataSetChanged();
+            if (!mBadIteration){
+                mAdapter.notifyDataSetChanged();
+                mBadIteration = true;
+            }
         }
         else {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());

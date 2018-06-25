@@ -5,7 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v4.app.NotificationManagerCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.francoislf.mynews.Controllers.Utils.MyAlarmReceiver;
@@ -13,13 +13,15 @@ import com.example.francoislf.mynews.Models.SearchPreferences;
 import com.example.francoislf.mynews.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import java.lang.reflect.Type;
 import java.util.Calendar;
+
 
 public class NotificationsActivity extends AbstractActivity implements NotificationsFragment.onSaveSituationListener {
 
     public static final int NOTIFICATION_CODE = 100;
+    public static final String TITLE_REQUEST_CODE = "TITLE_REQUEST_CODE";
+    public static final String LIST_CHECKBOXES_REQUEST_CODE = "LIST_CHECKBOXES_REQUEST_CODE";
     private PendingIntent mPendingIntent;
     NotificationsFragment mNotificationsFragment;
     private SharedPreferences mJSonNotifications;
@@ -73,10 +75,12 @@ public class NotificationsActivity extends AbstractActivity implements Notificat
      */
 
 
-    private void configureAlarmManager(String following){
+    private void configureAlarmManager(){
         Intent intent = new Intent(NotificationsActivity.this, MyAlarmReceiver.class);
-        intent.putExtra("extra", following);
+        intent.putExtra(TITLE_REQUEST_CODE, mSearchPreferences.getSearchString());
+        intent.putExtra(LIST_CHECKBOXES_REQUEST_CODE, mSearchPreferences.getListCheckBoxString());
         mPendingIntent = PendingIntent.getBroadcast(NotificationsActivity.this,0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Log.i("TAGO", "AlarmManager configured");
     }
 
     private void startAlarm(){
@@ -84,7 +88,7 @@ public class NotificationsActivity extends AbstractActivity implements Notificat
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, 17);
-        calendar.set(Calendar.MINUTE, 10);
+        calendar.set(Calendar.MINUTE, 56);
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
@@ -105,7 +109,7 @@ public class NotificationsActivity extends AbstractActivity implements Notificat
     @Override
     public void onSaveSituation(String json, boolean bool) {
         save(SHARED_DEFAULT_NOTIFICATIONS, json);
-        this.configureAlarmManager("NOTIFICATIONS");
+        this.configureAlarmManager();
         if (bool) startAlarm();
         else stopAlarm();
     }

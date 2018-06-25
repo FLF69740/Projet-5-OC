@@ -69,6 +69,8 @@ public abstract class AbstractFragment extends Fragment{
         this.enableOrDisableEditText();
         this.editCalendars();
 
+
+
         return view;
     }
 
