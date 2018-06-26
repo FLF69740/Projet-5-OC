@@ -27,6 +27,8 @@ import butterknife.ButterKnife;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 
+import static com.example.francoislf.mynews.Views.ArticleViewHolder.sImageWebMissing;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -148,7 +150,7 @@ public class PageFragment extends Fragment{
             mArticleItem.setPubDate(results.get(i).getPublishedDate());
             mArticleItem.setTitle(results.get(i).getTitle());
         if (!results.get(i).getMultimedia().isEmpty())   mArticleItem.setPhotoUrl("" + results.get(i).getMultimedia().get(0).getUrl());
-        else mArticleItem.setPhotoUrl("http://www.idfmoteurs.com/images/pas-image-disponible.png");
+        else mArticleItem.setPhotoUrl(sImageWebMissing);
             mArticleItem.setWebUrl(results.get(i).getUrl());
 
             mArticleItemList.add(mArticleItem);

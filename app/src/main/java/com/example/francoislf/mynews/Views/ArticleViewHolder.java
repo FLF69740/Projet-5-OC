@@ -13,12 +13,15 @@ import com.example.francoislf.mynews.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+
 public class ArticleViewHolder extends RecyclerView.ViewHolder{
 
     @BindView(R.id.id_title_recyclerView) TextView mTextViewTitle;
     @BindView(R.id.id_date_recyclerView) TextView mTextViewDate;
     @BindView(R.id.id_section_recyclerView) TextView mTextViewSection;
     @BindView(R.id.id_image_recyclerView) ImageView mImageView;
+
+    public static final String sImageWebMissing = "sImageWebMissing";
 
     RecyclerSectionFormat mRecyclerSectionFormat;
 
@@ -35,6 +38,8 @@ public class ArticleViewHolder extends RecyclerView.ViewHolder{
         this.mTextViewTitle.setText(mRecyclerSectionFormat.getBody());
         this.mTextViewSection.setText(mRecyclerSectionFormat.getSectionFormat());
 
-        glide.load(mRecyclerSectionFormat.getWebImage()).apply(RequestOptions.centerInsideTransform()).into(mImageView);
+        if (!mRecyclerSectionFormat.getWebImage().equals(sImageWebMissing))
+            glide.load(mRecyclerSectionFormat.getWebImage()).apply(RequestOptions.centerInsideTransform()).into(mImageView);
+        else mImageView.setImageResource(R.drawable.no_image);
     }
 }
