@@ -3,6 +3,7 @@
     package="com.example.francoislf.mynews">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".Controllers.Utils.App"
@@ -30,10 +31,14 @@
             android:parentActivityName=".Controllers.MainActivity" />
         <activity
             android:name=".Controllers.OtherActivities.WebViewActivity"
+            android:parentActivityName=".Controllers.MainActivity" />
+        <activity android:name=".Controllers.OtherActivities.HelpActivity"
             android:parentActivityName=".Controllers.MainActivity"/>
 
-        <receiver android:name=".Controllers.Utils.MyAlarmReceiver"
-            android:exported="true"/>
+        <receiver
+            android:name=".Controllers.Utils.MyAlarmReceiver"
+            android:exported="true" />
+
     </application>
 
 </manifest>

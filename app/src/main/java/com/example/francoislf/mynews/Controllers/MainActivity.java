@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import com.example.francoislf.mynews.Controllers.OtherActivities.ArticleSearchActivity;
+import com.example.francoislf.mynews.Controllers.OtherActivities.HelpActivity;
 import com.example.francoislf.mynews.Controllers.OtherActivities.NotificationsActivity;
 import com.example.francoislf.mynews.Controllers.OtherActivities.SearchResultActivity;
 import com.example.francoislf.mynews.Controllers.OtherActivities.WebViewActivity;
@@ -125,8 +126,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId())
         {
             case R.id.menu_activity_parametres : launchNotifications(); return true;
-            case  R.id.menu_activity_search : launchSearchArticleActivity(); return true;
+            case R.id.menu_activity_search : launchSearchArticleActivity(); return true;
             case R.id.menu_activity_about : launchAboutBuilder(); return true;
+            case R.id.menu_activity_help : launchHelp(); return true;
             default : return super.onOptionsItemSelected(item);
         }
     }
@@ -160,6 +162,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // Methods in order to launch new Activity : NotificationsActivity
     private void launchNotifications(){
         Intent intent = new Intent(this, NotificationsActivity.class);
+        this.startActivity(intent);
+    }
+
+    // Methods in order to launch new Activity : HelpActivity
+    private void launchHelp(){
+        Intent intent= new Intent(this, HelpActivity.class);
         this.startActivity(intent);
     }
 

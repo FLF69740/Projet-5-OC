@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-
 import com.bumptech.glide.Glide;
 import com.example.francoislf.mynews.Controllers.Utils.ItemClickSupport;
 import com.example.francoislf.mynews.Models.ArticleItem;
@@ -26,12 +25,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
-
 import static com.example.francoislf.mynews.Views.ArticleViewHolder.sImageWebMissing;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class PageFragment extends Fragment{
 
     @BindView(R.id.fragment_root) LinearLayout mLinearLayout;
@@ -55,7 +50,6 @@ public class PageFragment extends Fragment{
         Bundle bundle = new Bundle();
         bundle.putString(KEY_TITLE, title);
         fragment.setArguments(bundle);
-
         return fragment;
     }
 
@@ -63,12 +57,10 @@ public class PageFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_page, container, false);
         ButterKnife.bind(this, view);
-
         configureRecyclerView();
         getArticles(getArguments().getString(KEY_TITLE,""));
         this.configureOnClickRecyclerView();
         mLinearLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
-
         return view;
     }
 
@@ -126,12 +118,10 @@ public class PageFragment extends Fragment{
                     public void onNext(TopStories topStories) {
                         getUpdateUITopStories(topStories);
                     }
-
                     @Override
                     public void onError(Throwable e) {
                         Log.i("TAGO", "On Error " + Log.getStackTraceString(e));
                     }
-
                     @Override
                     public void onComplete() {
                         Log.i("TAGO", "TopStories streams on complete");
@@ -142,7 +132,6 @@ public class PageFragment extends Fragment{
     // Update UI with mArticleItem calibration about TopStories section
     private void getUpdateUITopStories(TopStories topStories){
         List<TopStories.Result> results = topStories.getResults();
-
         for (int i = 0 ; i < results.size() ; i++) {
             mArticleItem = new ArticleItem();
             mArticleItem.setSection(results.get(i).getSection());
@@ -152,7 +141,6 @@ public class PageFragment extends Fragment{
         if (!results.get(i).getMultimedia().isEmpty())   mArticleItem.setPhotoUrl("" + results.get(i).getMultimedia().get(0).getUrl());
         else mArticleItem.setPhotoUrl(sImageWebMissing);
             mArticleItem.setWebUrl(results.get(i).getUrl());
-
             mArticleItemList.add(mArticleItem);
         }
         mAdapter.notifyDataSetChanged();
@@ -166,12 +154,10 @@ public class PageFragment extends Fragment{
                     public void onNext(MostPopular mostPopular) {
                         getUpdateUIMostPopular(mostPopular);
                     }
-
                     @Override
                     public void onError(Throwable e) {
                         Log.i("TAGO", "On Error " + Log.getStackTraceString(e));
                     }
-
                     @Override
                     public void onComplete() {
                         Log.i("TAGO", "Most popular streams on complete");
@@ -182,7 +168,6 @@ public class PageFragment extends Fragment{
     // Update UI with mArticleItem calibration about MostPopular section
     private void getUpdateUIMostPopular(MostPopular mostPopular){
         List<MostPopular.Result> results = mostPopular.getResults();
-
         for (int i = 0 ; i < results.size() ; i++) {
             mArticleItem = new ArticleItem();
             mArticleItem.setSection(results.get(i).getSection());
@@ -193,7 +178,6 @@ public class PageFragment extends Fragment{
                 mArticleItem.setPhotoUrl("" + results.get(i).getMedia().get(0).getMediaMetadata().get(0).getUrl());
             else mArticleItem.setPhotoUrl("NADA");
             mArticleItem.setWebUrl(results.get(i).getUrl());
-
             mArticleItemList.add(mArticleItem);
         }
         mAdapter.notifyDataSetChanged();
