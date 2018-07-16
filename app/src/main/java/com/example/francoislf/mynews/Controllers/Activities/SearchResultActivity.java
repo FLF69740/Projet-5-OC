@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.example.francoislf.mynews.Controllers.OtherActivities.SearchResultFragment;
+import com.example.francoislf.mynews.Controllers.Fragments.SearchResultFragment;
 import com.example.francoislf.mynews.Models.SearchPreferences;
 import com.example.francoislf.mynews.R;
 import com.google.gson.Gson;

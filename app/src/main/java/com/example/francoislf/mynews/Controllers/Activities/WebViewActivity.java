@@ -5,7 +5,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-import com.example.francoislf.mynews.Controllers.OtherActivities.WebViewFragment;
+import com.example.francoislf.mynews.Controllers.Fragments.WebViewFragment;
 import com.example.francoislf.mynews.R;
 
 import butterknife.BindView;

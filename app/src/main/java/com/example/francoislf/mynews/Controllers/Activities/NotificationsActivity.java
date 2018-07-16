@@ -8,7 +8,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.francoislf.mynews.Controllers.OtherActivities.NotificationsFragment;
+import com.example.francoislf.mynews.Controllers.Fragments.NotificationsFragment;
 import com.example.francoislf.mynews.Controllers.Utils.MyAlarmReceiver;
 import com.example.francoislf.mynews.Models.SearchPreferences;
 import com.example.francoislf.mynews.R;

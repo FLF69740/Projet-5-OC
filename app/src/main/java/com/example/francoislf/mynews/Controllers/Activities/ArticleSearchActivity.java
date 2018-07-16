@@ -3,7 +3,7 @@ package com.example.francoislf.mynews.Controllers.Activities;
 import android.content.Intent;
 import android.view.View;
 
-import com.example.francoislf.mynews.Controllers.OtherActivities.ArticleSearchFragment;
+import com.example.francoislf.mynews.Controllers.Fragments.ArticleSearchFragment;
 import com.example.francoislf.mynews.Models.SearchPreferences;
 import com.example.francoislf.mynews.R;
 import com.google.gson.Gson;

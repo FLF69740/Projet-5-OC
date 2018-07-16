@@ -1,6 +1,6 @@
 package com.example.francoislf.mynews;
 
-import com.example.francoislf.mynews.Controllers.OtherActivities.ArticleSearchFragment;
+import com.example.francoislf.mynews.Controllers.Fragments.ArticleSearchFragment;
 
 import org.junit.Before;
 import org.junit.Test;

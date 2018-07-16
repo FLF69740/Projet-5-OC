@@ -32,6 +32,8 @@
         <activity
             android:name=".Controllers.Activities.SearchResultActivity"
             android:parentActivityName=".Controllers.MainActivity"/>
+        <activity android:name=".Controllers.Activities.HelpActivity"
+            android:parentActivityName=".Controllers.MainActivity"/>
 
         <receiver
             android:name=".Controllers.Utils.MyAlarmReceiver"
