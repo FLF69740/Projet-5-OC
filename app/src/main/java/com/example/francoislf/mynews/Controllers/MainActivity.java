@@ -18,11 +18,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import com.example.francoislf.mynews.Controllers.OtherActivities.ArticleSearchActivity;
-import com.example.francoislf.mynews.Controllers.OtherActivities.HelpActivity;
-import com.example.francoislf.mynews.Controllers.OtherActivities.NotificationsActivity;
-import com.example.francoislf.mynews.Controllers.OtherActivities.SearchResultActivity;
-import com.example.francoislf.mynews.Controllers.OtherActivities.WebViewActivity;
+import com.example.francoislf.mynews.Controllers.Activities.ArticleSearchActivity;
+import com.example.francoislf.mynews.Controllers.Activities.HelpActivity;
+import com.example.francoislf.mynews.Controllers.Activities.NotificationsActivity;
+import com.example.francoislf.mynews.Controllers.Activities.SearchResultActivity;
+import com.example.francoislf.mynews.Controllers.Activities.WebViewActivity;
 import com.example.francoislf.mynews.Models.SearchPreferences;
 import com.example.francoislf.mynews.R;
 import com.google.gson.reflect.TypeToken;
@@ -30,7 +30,6 @@ import com.google.gson.Gson;
 import java.lang.reflect.Type;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, PageFragment.OnButtonClickedListener {
 
@@ -50,19 +49,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
         load();
-
-        // ToolBar Configuration
-        setToolbarConfiguration();
-
-        // Navigation Drawer Configuration
-        configureDrawerLayout();
+        this.setToolbarConfiguration();
+        this.configureDrawerLayout();
         mNavigationView.setNavigationItemSelectedListener(this);
-
-        // ViewPager Configuration
         configureViewPager();
-
         mTabLayout.getTabAt(0).select();
     }
 
@@ -76,12 +67,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mDrawerLayout.addDrawerListener(toggle);
         toggle.getDrawerArrowDrawable().setColor(Color.parseColor("#000000"));
         toggle.syncState();
-
         Menu m = mNavigationView.getMenu();
         MenuItem[] listMenuItem = new MenuItem[mSearchPreferences.getListCheckBoxString().size()];
-        for (int i = 0 ; i < mSearchPreferences.getListCheckBoxString().size() ; i++)
-            listMenuItem[i] = m.add(0,i,i,mSearchPreferences.getListCheckBoxString().get(i));
-
+        for (int i = 0 ; i < mSearchPreferences.getListCheckBoxString().size() ; i++) listMenuItem[i] = m.add(0,i,i,mSearchPreferences.getListCheckBoxString().get(i));
     }
 
     // Navigation item click
@@ -122,9 +110,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // Add actions to item icon from ToolBar
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId())
-        {
+        switch (item.getItemId()) {
             case R.id.menu_activity_parametres : launchNotifications(); return true;
             case R.id.menu_activity_search : launchSearchArticleActivity(); return true;
             case R.id.menu_activity_about : launchAboutBuilder(); return true;
@@ -137,9 +123,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void launchAboutBuilder(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("ABOUT")
-                .setMessage("MY NEWS : v 1.0.0\nbuilt : 2018/07/01\n" +
-                            "Powered with Android Studio for Android 4.4 and higher\n\n" +
-                            "created by FLT Starcraft")
+                .setMessage("MY NEWS : v 1.0.0\nbuilt : 2018/07/01\nPowered with Android Studio for Android 4.4 and higher\n\ncreated by FLT Starcraft")
                 .setPositiveButton("CLOSE", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -196,7 +180,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String json = mJSonPreferences.getString(SHARED_DEFAULT_SEARCH, null);
         Type type = new TypeToken<SearchPreferences>() {}.getType();
         mSearchPreferences = gson.fromJson(json, type);
-
         if (mSearchPreferences == null) mSearchPreferences = new SearchPreferences();
     }
 

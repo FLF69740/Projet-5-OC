@@ -157,7 +157,6 @@ public class SearchResultFragment extends Fragment {
                         mArticleItem.setPhotoUrl(sRootHttpUrl + results.get(i).getMultimedia().get(0).getUrl());
                     else mArticleItem.setPhotoUrl(sImageWebMissing);
                     mArticleItem.setWebUrl(results.get(i).getWebUrl());
-
                     mArticleItemList.add(mArticleItem);
                 }
             }

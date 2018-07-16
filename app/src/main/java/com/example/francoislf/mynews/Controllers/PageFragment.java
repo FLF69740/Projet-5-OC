@@ -115,17 +115,11 @@ public class PageFragment extends Fragment{
         this.mDisposable = ArticlesStreams.streamTopStories(section)
                 .subscribeWith(new DisposableObserver<TopStories>() {
                     @Override
-                    public void onNext(TopStories topStories) {
-                        getUpdateUITopStories(topStories);
-                    }
+                    public void onNext(TopStories topStories) {getUpdateUITopStories(topStories);}
                     @Override
-                    public void onError(Throwable e) {
-                        Log.i("TAGO", "On Error " + Log.getStackTraceString(e));
-                    }
+                    public void onError(Throwable e) {Log.i("TAGO", "On Error " + Log.getStackTraceString(e));}
                     @Override
-                    public void onComplete() {
-                        Log.i("TAGO", "TopStories streams on complete");
-                    }
+                    public void onComplete() {Log.i("TAGO", "TopStories streams on complete");}
                 });
     }
 
@@ -151,17 +145,11 @@ public class PageFragment extends Fragment{
         this.mDisposable = ArticlesStreams.streamMostPopular()
                 .subscribeWith(new DisposableObserver<MostPopular>() {
                     @Override
-                    public void onNext(MostPopular mostPopular) {
-                        getUpdateUIMostPopular(mostPopular);
-                    }
+                    public void onNext(MostPopular mostPopular) {getUpdateUIMostPopular(mostPopular);}
                     @Override
-                    public void onError(Throwable e) {
-                        Log.i("TAGO", "On Error " + Log.getStackTraceString(e));
-                    }
+                    public void onError(Throwable e) {Log.i("TAGO", "On Error " + Log.getStackTraceString(e));}
                     @Override
-                    public void onComplete() {
-                        Log.i("TAGO", "Most popular streams on complete");
-                    }
+                    public void onComplete() {Log.i("TAGO", "Most popular streams on complete");}
                 });
     }
 

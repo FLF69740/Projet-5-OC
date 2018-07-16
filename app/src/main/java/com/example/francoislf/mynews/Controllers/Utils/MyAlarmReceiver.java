@@ -18,9 +18,9 @@ import java.util.Locale;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableObserver;
-import static com.example.francoislf.mynews.Controllers.OtherActivities.NotificationsActivity.LIST_CHECKBOXES_REQUEST_CODE;
-import static com.example.francoislf.mynews.Controllers.OtherActivities.NotificationsActivity.NOTIFICATION_CODE;
-import static com.example.francoislf.mynews.Controllers.OtherActivities.NotificationsActivity.TITLE_REQUEST_CODE;
+import static com.example.francoislf.mynews.Controllers.Activities.NotificationsActivity.LIST_CHECKBOXES_REQUEST_CODE;
+import static com.example.francoislf.mynews.Controllers.Activities.NotificationsActivity.NOTIFICATION_CODE;
+import static com.example.francoislf.mynews.Controllers.Activities.NotificationsActivity.TITLE_REQUEST_CODE;
 import static com.example.francoislf.mynews.Controllers.Utils.App.CHANNEL;
 
 public class MyAlarmReceiver extends BroadcastReceiver {
@@ -31,26 +31,20 @@ public class MyAlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
         mSearchPreferences = new SearchPreferences();
         mSearchPreferences.setListCheckBox(intent.getExtras().getStringArrayList(LIST_CHECKBOXES_REQUEST_CODE));
-
         String response = intent.getExtras().getString(TITLE_REQUEST_CODE);
-
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.FRANCE);
         Calendar calendarEnd = Calendar.getInstance();
         Calendar calendarStart = Calendar.getInstance();
         calendarStart.set(Calendar.DAY_OF_MONTH, calendarEnd.get(Calendar.DAY_OF_MONTH) - 1);
         String stringStart = sdf.format(calendarStart.getTime());
         String stringEnd= sdf.format(calendarEnd.getTime());
-
         executeHttpRequest(context, response, stringStart, stringEnd);
     }
 
     private void notificationShow(Context context, int number, String text){
-
         mNotificationManagerCompat = NotificationManagerCompat.from(context);
-
         Notification notification = new NotificationCompat.Builder(context, CHANNEL)
                 .setSmallIcon(R.drawable.ic_event_available_black_24dp)
                 .setContentTitle("MY NEWS")
@@ -58,7 +52,6 @@ public class MyAlarmReceiver extends BroadcastReceiver {
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                 .build();
-
         mNotificationManagerCompat.notify(NOTIFICATION_CODE, notification);
     }
 
@@ -111,8 +104,4 @@ public class MyAlarmReceiver extends BroadcastReceiver {
             this.notificationShow(context, numberOfArticles, text);
         }
     }
-
-
-
-
 }

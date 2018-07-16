@@ -1,6 +1,5 @@
 package com.example.francoislf.mynews.Controllers.OtherActivities;
 
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,18 +15,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.francoislf.mynews.Models.SearchPreferences;
 import com.example.francoislf.mynews.R;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public abstract class AbstractFragment extends Fragment{
-
-    protected SearchPreferences mSearchPreferences;
 
     @BindView(R.id.article_search_editText) EditText mEditText;
     @BindView(R.id.article_search_begin_date) EditText mEditTextBeginDate;
@@ -45,11 +38,10 @@ public abstract class AbstractFragment extends Fragment{
     @BindView(R.id.article_search_end_date_title) TextView mTextViewEndTitle;
     @BindView(R.id.article_search_notifications) Switch mNotificationSwitch;
 
+    protected SearchPreferences mSearchPreferences;
     protected CheckBox mCheckBoxes[] = new CheckBox[6];
     protected boolean mCheckBoxChecked = false;
-
     protected boolean mEditTextLength;
-
     protected abstract AbstractFragment newInstance();
     protected abstract int getFragmentLayout();
     protected abstract void hiddenWidget();
@@ -60,16 +52,12 @@ public abstract class AbstractFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(getFragmentLayout(), container, false);
-
         ButterKnife.bind(this, view);
-
         this.hiddenWidget();
         this.initCheckBoxTable();
         this.numberCheckBoxChecked();
         this.enableOrDisableEditText();
         this.editCalendars();
-
-
 
         return view;
     }
@@ -86,17 +74,14 @@ public abstract class AbstractFragment extends Fragment{
 
     // Listener definition of EditText
     protected void enableOrDisableEditText() {
-
         mEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 setEditTextLength(s.toString().length() != 0);
                 widgetActionState();
             }
-
             @Override
             public void afterTextChanged(Editable s) {}
         });
@@ -104,7 +89,6 @@ public abstract class AbstractFragment extends Fragment{
 
     // Listener definition of CheckBoxes
     protected void numberCheckBoxChecked(){
-
         for (int i = 0 ; i < mCheckBoxes.length ; i++){
             mCheckBoxes[i].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -147,18 +131,13 @@ public abstract class AbstractFragment extends Fragment{
 
     // Configure SharedPreferences into fragment
     public void updateFragmentData(SearchPreferences searchPreferences){
-
         this.mSearchPreferences = searchPreferences;
-
         mEditText.setText(mSearchPreferences.getSearchString());
-
         for (int i = 0 ; i < mCheckBoxes.length ; i++){
             for (int j = 0 ; j < mSearchPreferences.getListCheckBoxString().size() ; j++)
                 if (mCheckBoxes[i].getText().toString().equals(mSearchPreferences.getListCheckBoxString().get(j)))
                     mCheckBoxes[i].setChecked(true);
         }
-
         mNotificationSwitch.setChecked(mSearchPreferences.getSwitchState());
-
     }
 }

@@ -27,8 +27,7 @@ public class ItemClickSupport {
             return false;
         }
     };
-    private RecyclerView.OnChildAttachStateChangeListener mAttachListener
-            = new RecyclerView.OnChildAttachStateChangeListener() {
+    private RecyclerView.OnChildAttachStateChangeListener mAttachListener = new RecyclerView.OnChildAttachStateChangeListener() {
         @Override
         public void onChildViewAttachedToWindow(View view) {
             if (mOnItemClickListener != null) {
@@ -84,12 +83,10 @@ public class ItemClickSupport {
     }
 
     public interface OnItemClickListener {
-
         void onItemClicked(RecyclerView recyclerView, int position, View v);
     }
 
     public interface OnItemLongClickListener {
-
         boolean onItemLongClicked(RecyclerView recyclerView, int position, View v);
     }
 }

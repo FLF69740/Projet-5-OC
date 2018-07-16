@@ -2,24 +2,14 @@ package com.example.francoislf.mynews.Controllers.OtherActivities;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.Toast;
-
 import com.example.francoislf.mynews.R;
 import com.google.gson.Gson;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
-
 import butterknife.OnClick;
 
 public class ArticleSearchFragment extends AbstractFragment {
@@ -159,11 +149,9 @@ public class ArticleSearchFragment extends AbstractFragment {
     @OnClick(R.id.article_search_button_search)
     public void submit(View view){
         mSearchPreferences.resetCheckBoxList();
-
         for (int j = 0 ; j < mCheckBoxes.length ; j++) {
             if (mCheckBoxes[j].isChecked()) mSearchPreferences.addCheckBox(mCheckBoxes[j].getText().toString());
         }
-
         mSearchPreferences.setBeginDateString(mEditTextBeginDate.getText().toString());
         mSearchPreferences.setEndDateString(mEditTextEndDate.getText().toString());
         mSearchPreferences.setSearchString(mEditText.getText().toString());

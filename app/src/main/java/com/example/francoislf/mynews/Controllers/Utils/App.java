@@ -17,9 +17,7 @@ public class App  extends Application{
 
     private void createNotificationChannel(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            NotificationChannel channel = new NotificationChannel(CHANNEL,
-                    "NOTIFCATION",
-                    NotificationManager.IMPORTANCE_HIGH);
+            NotificationChannel channel = new NotificationChannel(CHANNEL, "NOTIFCATION", NotificationManager.IMPORTANCE_HIGH);
             channel.setDescription("This notification allow to create an message when new article is published according to preferences setting");
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(channel);

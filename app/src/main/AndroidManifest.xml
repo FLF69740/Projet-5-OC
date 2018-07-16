@@ -21,23 +21,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Controllers.OtherActivities.ArticleSearchActivity"
+            android:name=".Controllers.Activities.ArticleSearchActivity"
             android:parentActivityName=".Controllers.MainActivity" />
         <activity
-            android:name=".Controllers.OtherActivities.NotificationsActivity"
+            android:name=".Controllers.Activities.NotificationsActivity"
             android:parentActivityName=".Controllers.MainActivity" />
         <activity
-            android:name=".Controllers.OtherActivities.SearchResultActivity"
-            android:parentActivityName=".Controllers.MainActivity" />
+            android:name=".Controllers.Activities.WebViewActivity"
+            android:parentActivityName=".Controllers.MainActivity"/>
         <activity
-            android:name=".Controllers.OtherActivities.WebViewActivity"
-            android:parentActivityName=".Controllers.MainActivity" />
-        <activity android:name=".Controllers.OtherActivities.HelpActivity"
+            android:name=".Controllers.Activities.SearchResultActivity"
             android:parentActivityName=".Controllers.MainActivity"/>
 
         <receiver
             android:name=".Controllers.Utils.MyAlarmReceiver"
             android:exported="true" />
+
 
     </application>
 

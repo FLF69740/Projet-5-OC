@@ -1,9 +1,9 @@
-package com.example.francoislf.mynews.Controllers.OtherActivities;
+package com.example.francoislf.mynews.Controllers.Activities;
 
 import android.content.Intent;
 import android.view.View;
-import android.widget.Toast;
 
+import com.example.francoislf.mynews.Controllers.OtherActivities.ArticleSearchFragment;
 import com.example.francoislf.mynews.Models.SearchPreferences;
 import com.example.francoislf.mynews.R;
 import com.google.gson.Gson;
@@ -13,7 +13,7 @@ import java.lang.reflect.Type;
 
 public class ArticleSearchActivity extends AbstractActivity implements ArticleSearchFragment.OnButtonClickedListener {
 
-    ArticleSearchFragment mArticleSearchFragment;
+    private ArticleSearchFragment mArticleSearchFragment;
 
     public static final String BUNDLE_EXTRA_SEARCH_ARTICLE = "BUNDLE_EXTRA_SEARCH_ARTICLE";
 
@@ -42,11 +42,8 @@ public class ArticleSearchActivity extends AbstractActivity implements ArticleSe
         String json = getIntent().getStringExtra(SHARED_DEFAULT_SEARCH);
         Type type = new TypeToken<SearchPreferences>() {}.getType();
         mSearchPreferences = gson.fromJson(json, type);
-
         if (mSearchPreferences == null) mSearchPreferences = new SearchPreferences();
-
         mArticleSearchFragment.updateFragmentData(mSearchPreferences);
-
     }
 
     // put the new json to the Main Activity

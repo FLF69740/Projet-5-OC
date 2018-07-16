@@ -1,28 +1,28 @@
-package com.example.francoislf.mynews.Controllers.OtherActivities;
+package com.example.francoislf.mynews.Controllers.Activities;
 
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+
+import com.example.francoislf.mynews.Controllers.OtherActivities.WebViewFragment;
 import com.example.francoislf.mynews.R;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class WebViewActivity extends AppCompatActivity {
 
-    WebViewFragment mWebViewFragment;
+    private WebViewFragment mWebViewFragment;
     public static final String LINK_WEBVIEW = "LINK_WEBVIEW";
 
-    @BindView(R.id.activity_webview_toolbar)
-    Toolbar mToolbar;
+    @BindView(R.id.activity_webview_toolbar) Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
-
         ButterKnife.bind(this);
-
         this.configureToolBar();
         this.configureFragment();
     }
@@ -30,7 +30,6 @@ public class WebViewActivity extends AppCompatActivity {
     // Configure SearchResultFragment into this Activity
     protected void configureFragment() {
         mWebViewFragment = (WebViewFragment) getSupportFragmentManager().findFragmentById(R.id.frame_layout_webview);
-
         if (mWebViewFragment == null){
             mWebViewFragment = new WebViewFragment();
             getSupportFragmentManager().beginTransaction()

@@ -1,12 +1,13 @@
-package com.example.francoislf.mynews.Controllers.OtherActivities;
+package com.example.francoislf.mynews.Controllers.Activities;
 
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import com.example.francoislf.mynews.Models.SearchPreferences;
 import com.example.francoislf.mynews.R;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
