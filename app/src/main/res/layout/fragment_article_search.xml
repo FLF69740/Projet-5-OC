@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Controllers.OtherActivities.ArticleSearchFragment"
+    tools:context=".Controllers.Fragments.ArticleSearchFragment"
     android:theme="@style/secondActivityColor">
 
     <!-- TODO: Update blank fragment layout -->
